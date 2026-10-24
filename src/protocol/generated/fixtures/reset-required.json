@@ -1,0 +1,9 @@
+{
+  "schema": "qaqh.Ringing",
+  "version": 2,
+  "server_epoch": "fixture-epoch",
+  "session_id": "session-fixture",
+  "log_id": "fixture-log",
+  "snapshot_cursor": "v2.eyJsb2dfaWQiOiJmaXh0dXJlLWxvZyIsImZhY3Rfc2VxIjozLCJwcm9qZWN0aW9uX2luZGV4Ijo2NTUzNX0",
+  "reason": "replay_overflow"
+}

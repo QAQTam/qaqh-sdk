@@ -1,0 +1,20 @@
+{
+  "name": "@qaqh/sdk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Typed Ringing v2 client SDK for QAQ-Harness",
+  "exports": {
+    ".": { "types": "./dist/core/index.d.ts", "import": "./dist/core/index.js" },
+    "./protocol": { "types": "./dist/protocol/index.d.ts", "import": "./dist/protocol/index.js" },
+    "./node": { "types": "./dist/node/index.d.ts", "import": "./dist/node/index.js" }
+  },
+  "files": ["dist", "src/protocol/generated/manifest.json"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test test/*.test.mjs",
+    "pack": "npm pack --ignore-scripts"
+  },
+  "devDependencies": { "typescript": "^7.0.2", "@types/node": "^22.13.0" }
+}

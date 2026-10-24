@@ -1,0 +1,852 @@
+{
+  "acceptance": {
+    "electron_real_transport": "not_verified",
+    "remote_tls": "out_of_scope",
+    "rust_handler_tests": "see verification report",
+    "typescript_consumer": "requires tsc validation"
+  },
+  "capabilities": [
+    {
+      "fixtures": [
+        "approvals-pending.json",
+        "approvals-empty.json"
+      ],
+      "id": "approvals.admin",
+      "method": "GET",
+      "minimum_scope": "interact",
+      "path": "/ringing/v2/sessions/{session_id}/approvals",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": true,
+      "status": "implemented",
+      "types": [
+        "RingingV2PendingApprovals",
+        "RingingV2PendingPermissionView",
+        "RingingV2PendingInteractionView"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [],
+      "id": "approvals.device",
+      "reason": "opaque challenge view untyped; remote acceptance deferred",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [
+        "command-status-accepted.json"
+      ],
+      "id": "command.status",
+      "method": "GET",
+      "minimum_scope": "view",
+      "path": "/ringing/v2/commands/{command_id}",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": true,
+      "status": "implemented",
+      "types": [
+        "RingingV2CommandStatus"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [
+        "command-attach.json",
+        "command-ack-accepted.json"
+      ],
+      "id": "command.submit",
+      "method": "POST",
+      "minimum_scope": "command-dependent",
+      "path": "/ringing/v2/commands/{channel}",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": true,
+      "status": "implemented",
+      "types": [
+        "RingingV2CommandEnvelope",
+        "RingingV2CommandAck"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [
+        "open-request.json",
+        "open-response.json"
+      ],
+      "id": "connect.open",
+      "method": "POST",
+      "minimum_scope": "view",
+      "path": "/ringing/v2/clients/open",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": false,
+      "status": "implemented",
+      "types": [
+        "RingingV2OpenRequest",
+        "RingingV2OpenResponse"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [
+        "lease-renew.json"
+      ],
+      "id": "connect.renew",
+      "method": "POST",
+      "minimum_scope": "view",
+      "path": "/ringing/v2/leases/renew",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": true,
+      "status": "implemented",
+      "types": [
+        "RingingV2LeaseRenewResponse"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [],
+      "id": "content.download",
+      "reason": "bytes/header mapping pending SDK-side contract",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [
+        "content-upload-response.json"
+      ],
+      "id": "content.upload",
+      "method": "POST",
+      "minimum_scope": "interact",
+      "path": "/ringing/v2/content",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": true,
+      "status": "implemented",
+      "types": [
+        "RingingV2ContentUploadResponse"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [],
+      "id": "daemon.control",
+      "reason": "control endpoints not in first typed slice",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [
+        "devices.json"
+      ],
+      "id": "devices.list",
+      "method": "GET",
+      "minimum_scope": "admin",
+      "path": "/ringing/v2/devices",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": false,
+      "status": "implemented",
+      "types": [
+        "RingingV2DevicesResponse"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [],
+      "id": "devices.revoke",
+      "method": "POST",
+      "minimum_scope": "admin",
+      "path": "/ringing/v2/devices/{device_id}/revoke",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": false,
+      "status": "implemented",
+      "types": [],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [],
+      "id": "discovery.local",
+      "method": "file",
+      "minimum_scope": "host",
+      "path": "daemon.json",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": false,
+      "status": "implemented",
+      "types": [
+        "DaemonDiscovery"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [
+        "driver-claim-busy.json"
+      ],
+      "id": "driver.claim",
+      "method": "POST",
+      "minimum_scope": "interact",
+      "path": "/ringing/v2/sessions/{session_id}/driver/claim",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": true,
+      "status": "implemented",
+      "types": [
+        "RingingV2DriverClaimResponse"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [
+        "driver-release.json"
+      ],
+      "id": "driver.release",
+      "method": "POST",
+      "minimum_scope": "interact",
+      "path": "/ringing/v2/sessions/{session_id}/driver/release",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": true,
+      "status": "implemented",
+      "types": [
+        "RingingV2DriverReleaseResponse"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [
+        "pair-token-params.json",
+        "pair-token-result.json"
+      ],
+      "id": "pairing.issue",
+      "method": "POST",
+      "minimum_scope": "admin",
+      "path": "/ringing/v2/pairing/tokens",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": false,
+      "status": "implemented",
+      "types": [
+        "RingingV2PairTokenRequest",
+        "RingingV2PairTokenResponse"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [
+        "pair-params.json",
+        "pair-result.json"
+      ],
+      "id": "pairing.pair",
+      "method": "POST",
+      "minimum_scope": "pairing-token",
+      "path": "/ringing/v2/pair",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": false,
+      "status": "implemented",
+      "types": [
+        "RingingV2PairRequest",
+        "RingingV2PairResponse"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [],
+      "id": "service.config.load",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.config.save",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.config.set_permission_level",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "admin_only": false,
+      "fixtures": [
+        "service-daemon-version-params.json",
+        "service-daemon-version-result.json"
+      ],
+      "id": "service.daemon.version",
+      "kind": "read",
+      "method": "POST",
+      "params_type": "DaemonVersionParams",
+      "path": "/ringing/v2/service/daemon.version",
+      "requires_session": false,
+      "result_type": "string",
+      "status": "implemented"
+    },
+    {
+      "fixtures": [],
+      "id": "service.diagnostics.memory.snapshot",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.diagnostics.memory.start",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.diagnostics.memory.stop",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-dsaccount-balance-params.json",
+        "service-dsaccount-balance-result.json"
+      ],
+      "id": "service.dsaccount.balance",
+      "kind": "read",
+      "method": "POST",
+      "params_type": "AccountsEmptyParams",
+      "path": "/ringing/v2/service/dsaccount.balance",
+      "requires_session": false,
+      "result_type": "DsAccountBalanceResult",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-dsaccount-bonus-ack-params.json",
+        "service-dsaccount-bonus-ack-result.json"
+      ],
+      "id": "service.dsaccount.bonus.ack",
+      "kind": "write",
+      "method": "POST",
+      "params_type": "DsAccountBonusAckParams",
+      "path": "/ringing/v2/service/dsaccount.bonus.ack",
+      "requires_session": false,
+      "result_type": "null",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-dsaccount-bonuses-params.json",
+        "service-dsaccount-bonuses-result.json"
+      ],
+      "id": "service.dsaccount.bonuses",
+      "kind": "read",
+      "method": "POST",
+      "params_type": "AccountsEmptyParams",
+      "path": "/ringing/v2/service/dsaccount.bonuses",
+      "requires_session": false,
+      "result_type": "DsAccountBonus[]",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-dsaccount-models-params.json",
+        "service-dsaccount-models-result.json"
+      ],
+      "id": "service.dsaccount.models",
+      "kind": "read",
+      "method": "POST",
+      "params_type": "AccountsEmptyParams",
+      "path": "/ringing/v2/service/dsaccount.models",
+      "requires_session": false,
+      "result_type": "DsAccountModel[]",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-dsaccount-sign_in-cancel-params.json",
+        "service-dsaccount-sign_in-cancel-result.json"
+      ],
+      "id": "service.dsaccount.sign_in.cancel",
+      "kind": "write",
+      "method": "POST",
+      "params_type": "DsAccountAttemptParams",
+      "path": "/ringing/v2/service/dsaccount.sign_in.cancel",
+      "requires_session": false,
+      "result_type": "null",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-dsaccount-sign_in-start-params.json",
+        "service-dsaccount-sign_in-start-result.json"
+      ],
+      "id": "service.dsaccount.sign_in.start",
+      "kind": "write",
+      "method": "POST",
+      "params_type": "DsAccountSignInStartParams",
+      "path": "/ringing/v2/service/dsaccount.sign_in.start",
+      "requires_session": false,
+      "result_type": "DsAccountSignInStartResult",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-dsaccount-sign_in-status-params.json",
+        "service-dsaccount-sign_in-status-result.json"
+      ],
+      "id": "service.dsaccount.sign_in.status",
+      "kind": "read",
+      "method": "POST",
+      "params_type": "AccountsEmptyParams",
+      "path": "/ringing/v2/service/dsaccount.sign_in.status",
+      "requires_session": false,
+      "result_type": "DsAccountSignInStatusResult",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-dsaccount-sign_out-params.json",
+        "service-dsaccount-sign_out-result.json"
+      ],
+      "id": "service.dsaccount.sign_out",
+      "kind": "write",
+      "method": "POST",
+      "params_type": "AccountsEmptyParams",
+      "path": "/ringing/v2/service/dsaccount.sign_out",
+      "requires_session": false,
+      "result_type": "null",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-dsaccount-status-params.json",
+        "service-dsaccount-status-result.json"
+      ],
+      "id": "service.dsaccount.status",
+      "kind": "read",
+      "method": "POST",
+      "params_type": "AccountsEmptyParams",
+      "path": "/ringing/v2/service/dsaccount.status",
+      "requires_session": false,
+      "result_type": "DsAccountStatusResult",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-dsaccount-verify-params.json",
+        "service-dsaccount-verify-result.json"
+      ],
+      "id": "service.dsaccount.verify",
+      "kind": "write",
+      "method": "POST",
+      "params_type": "AccountsEmptyParams",
+      "path": "/ringing/v2/service/dsaccount.verify",
+      "requires_session": false,
+      "result_type": "DsAccountVerifyResult",
+      "status": "implemented"
+    },
+    {
+      "admin_only": false,
+      "fixtures": [
+        "service-fs-list-params.json",
+        "service-fs-list-result.json"
+      ],
+      "id": "service.fs.list",
+      "kind": "read",
+      "method": "POST",
+      "params_type": "FsListParams",
+      "path": "/ringing/v2/service/fs.list",
+      "requires_session": false,
+      "result_type": "FsEntry[]",
+      "status": "implemented"
+    },
+    {
+      "admin_only": false,
+      "fixtures": [
+        "service-fs-read-params.json",
+        "service-fs-read-result.json"
+      ],
+      "id": "service.fs.read",
+      "kind": "read",
+      "method": "POST",
+      "params_type": "FsReadParams",
+      "path": "/ringing/v2/service/fs.read",
+      "requires_session": false,
+      "result_type": "FsReadResult",
+      "status": "implemented"
+    },
+    {
+      "fixtures": [],
+      "id": "service.git.branch",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.git.branches",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.git.commit",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.git.diff",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.git.file_diff",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.git.switch_branch",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.plan.read",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.profile.apply",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.profile.delete",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.profile.save_current",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.session.activity",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.session.dashboard",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.session.get_activity",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.session.list",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.session.meta",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "admin_only": false,
+      "fixtures": [
+        "service-session-rename-params.json",
+        "service-session-rename-result.json"
+      ],
+      "id": "service.session.rename",
+      "kind": "write",
+      "method": "POST",
+      "params_type": "SessionRenameParams",
+      "path": "/ringing/v2/service/session.rename",
+      "requires_session": true,
+      "result_type": "null",
+      "status": "implemented"
+    },
+    {
+      "fixtures": [],
+      "id": "service.session.set_profile",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.session.set_tool_mode",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-siwc-models-params.json",
+        "service-siwc-models-result.json"
+      ],
+      "id": "service.siwc.models",
+      "kind": "read",
+      "method": "POST",
+      "params_type": "SiwcProfileParams",
+      "path": "/ringing/v2/service/siwc.models",
+      "requires_session": false,
+      "result_type": "SiwcModel[]",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-siwc-profile-select-params.json",
+        "service-siwc-profile-select-result.json"
+      ],
+      "id": "service.siwc.profile.select",
+      "kind": "write",
+      "method": "POST",
+      "params_type": "SiwcProfileSelectParams",
+      "path": "/ringing/v2/service/siwc.profile.select",
+      "requires_session": false,
+      "result_type": "SiwcStatusResult",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-siwc-profiles-params.json",
+        "service-siwc-profiles-result.json"
+      ],
+      "id": "service.siwc.profiles",
+      "kind": "read",
+      "method": "POST",
+      "params_type": "AccountsEmptyParams",
+      "path": "/ringing/v2/service/siwc.profiles",
+      "requires_session": false,
+      "result_type": "SiwcProfilesResult",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-siwc-sign_in-cancel-params.json",
+        "service-siwc-sign_in-cancel-result.json"
+      ],
+      "id": "service.siwc.sign_in.cancel",
+      "kind": "write",
+      "method": "POST",
+      "params_type": "SiwcFlowParams",
+      "path": "/ringing/v2/service/siwc.sign_in.cancel",
+      "requires_session": false,
+      "result_type": "null",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-siwc-sign_in-start-params.json",
+        "service-siwc-sign_in-start-result.json"
+      ],
+      "id": "service.siwc.sign_in.start",
+      "kind": "write",
+      "method": "POST",
+      "params_type": "SiwcSignInStartParams",
+      "path": "/ringing/v2/service/siwc.sign_in.start",
+      "requires_session": false,
+      "result_type": "SiwcSignInStartResult",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-siwc-sign_in-status-params.json",
+        "service-siwc-sign_in-status-result.json"
+      ],
+      "id": "service.siwc.sign_in.status",
+      "kind": "read",
+      "method": "POST",
+      "params_type": "SiwcFlowParams",
+      "path": "/ringing/v2/service/siwc.sign_in.status",
+      "requires_session": false,
+      "result_type": "SiwcSignInStatusResult",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-siwc-sign_out-params.json",
+        "service-siwc-sign_out-result.json"
+      ],
+      "id": "service.siwc.sign_out",
+      "kind": "write",
+      "method": "POST",
+      "params_type": "SiwcProfileParams",
+      "path": "/ringing/v2/service/siwc.sign_out",
+      "requires_session": false,
+      "result_type": "SiwcSignOutResult",
+      "status": "implemented"
+    },
+    {
+      "admin_only": true,
+      "fixtures": [
+        "service-siwc-status-params.json",
+        "service-siwc-status-result.json"
+      ],
+      "id": "service.siwc.status",
+      "kind": "read",
+      "method": "POST",
+      "params_type": "AccountsEmptyParams",
+      "path": "/ringing/v2/service/siwc.status",
+      "requires_session": false,
+      "result_type": "SiwcStatusResult",
+      "status": "implemented"
+    },
+    {
+      "fixtures": [],
+      "id": "service.skills.list_tools",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.skills.operation",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.skills.reload",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.subagent.spawn",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.todo.list",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.todo.set",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.todo.status",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.workspace.create",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.workspace.delete",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.workspace.detach",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.workspace.get",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.workspace.list",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.workspace.move_session",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.workspace.rename",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [],
+      "id": "service.workspace.set",
+      "status": "pending",
+      "types": []
+    },
+    {
+      "fixtures": [
+        "bootstrap-response.json",
+        "event-envelope-team-delta.json"
+      ],
+      "id": "session.bootstrap-watch",
+      "method": "GET",
+      "minimum_scope": "view",
+      "path": "/ringing/v2/sessions/{session_id}/bootstrap + /events",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": true,
+      "status": "implemented",
+      "types": [
+        "ClientV2Bootstrap",
+        "ClientV2ControlState",
+        "ClientV2ToolState",
+        "ConversationSnapshot",
+        "ClientV2Payload",
+        "ClientV2Event"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [
+        "team-response.json"
+      ],
+      "id": "session.team",
+      "method": "GET",
+      "minimum_scope": "view",
+      "path": "/ringing/v2/sessions/{session_id}/team",
+      "remote_transport_acceptance": "not_verified",
+      "requires_lease": true,
+      "status": "implemented",
+      "types": [
+        "ClientV2TeamResponse",
+        "TeamSnapshot",
+        "TaskBoardSnapshot",
+        "TeamBoardSnapshot"
+      ],
+      "validation": "rust-dto"
+    },
+    {
+      "fixtures": [],
+      "id": "timeline.snapshot-watch",
+      "reason": "timeline DTO/fixtures pending",
+      "status": "pending",
+      "types": []
+    }
+  ],
+  "format_version": 1,
+  "scope": "backend_contract"
+}

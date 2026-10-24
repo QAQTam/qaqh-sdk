@@ -1,0 +1,24 @@
+{
+  "schema": "qaqh.Ringing",
+  "version": 2,
+  "server_epoch": "fixture-epoch",
+  "session_id": "0199a0f0-0000-7000-8000-000000000001",
+  "event_id": "event-fixture-1",
+  "stream_key": {
+    "kind": "channel",
+    "data": "control"
+  },
+  "delivery": "ephemeral",
+  "ts_ms": 1759000000000,
+  "payload": {
+    "kind": "team_delta",
+    "data": {
+      "kind": "agent_residency_changed",
+      "data": {
+        "revision": 3,
+        "agent_id": "0199a0f0-0000-7000-8000-000000000002",
+        "residency": "unloaded"
+      }
+    }
+  }
+}

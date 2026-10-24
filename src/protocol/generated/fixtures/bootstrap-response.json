@@ -1,0 +1,64 @@
+{
+  "schema": "qaqh.Ringing",
+  "version": 2,
+  "server_epoch": "fixture-epoch",
+  "session_id": "0199a0f0-0000-7000-8000-000000000001",
+  "snapshot_cursor": "v2.eyJsb2dfaWQiOiJmaXh0dXJlLWxvZyIsImZhY3Rfc2VxIjozLCJwcm9qZWN0aW9uX2luZGV4Ijo2NTUzNX0",
+  "control": {
+    "channel": "control",
+    "state_revision": 7,
+    "snapshot_version": 1,
+    "state": {
+      "session_id": "0199a0f0-0000-7000-8000-000000000001",
+      "activity": "idle",
+      "current_turn_id": null,
+      "current_call_id": null,
+      "round": null,
+      "tools": [],
+      "subagents": [],
+      "last_recovery": null,
+      "revision": 7,
+      "last_fact_seq": 42,
+      "interactions": [
+        {
+          "interaction_id": "int_fixture",
+          "call_id": "call_fixture",
+          "turn_id": "turn_fixture",
+          "kind": "plan",
+          "request": {
+            "kind": "ref",
+            "data": {
+              "content_ref": "sha256:synthetic-content-hash"
+            }
+          }
+        }
+      ],
+      "driver": {
+        "driver_epoch": 4,
+        "can_claim": true
+      }
+    }
+  },
+  "conversation": {
+    "channel": "conversation",
+    "state_revision": 5,
+    "snapshot_version": 1,
+    "state": {
+      "session_id": null,
+      "turns": [],
+      "context": [],
+      "compaction": null,
+      "current_turn_id": null,
+      "revision": 0,
+      "last_fact_seq": 0
+    }
+  },
+  "tool": {
+    "channel": "tool",
+    "state_revision": 7,
+    "snapshot_version": 1,
+    "state": {
+      "tools": []
+    }
+  }
+}
