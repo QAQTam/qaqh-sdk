@@ -1,10 +1,12 @@
-import type { AccountsEmptyParams, DaemonVersionParams, DsAccountAttemptParams, DsAccountBalanceResult, DsAccountBonus, DsAccountBonusAckParams, DsAccountModel, DsAccountSignInStartParams, DsAccountSignInStartResult, DsAccountSignInStatusResult, DsAccountStatusResult, DsAccountVerifyResult, FsEntry, FsListParams, FsReadParams, FsReadResult, SessionRenameParams, SiwcFlowParams, SiwcModel, SiwcProfileParams, SiwcProfileSelectParams, SiwcProfilesResult, SiwcSignInStartParams, SiwcSignInStartResult, SiwcSignInStatusResult, SiwcSignOutResult, SiwcStatusResult } from "./index";
+import type { AccountsEmptyParams, DaemonVersionParams, DsAccountAttemptParams, DsAccountBalanceResult, DsAccountBonus, DsAccountBonusAckParams, DsAccountModel, DsAccountSignInStartParams, DsAccountSignInStartResult, DsAccountSignInStatusResult, DsAccountStatusResult, DsAccountVerifyResult, FsEntry, FsListParams, FsReadParams, FsReadResult, SessionListEntry, SessionListParams, SessionMetaParams, SessionRenameParams, SiwcFlowParams, SiwcModel, SiwcProfileParams, SiwcProfileSelectParams, SiwcProfilesResult, SiwcSignInStartParams, SiwcSignInStartResult, SiwcSignInStatusResult, SiwcSignOutResult, SiwcStatusResult } from "./index";
 
 export interface ServiceMap {
   "daemon.version": { params: DaemonVersionParams; result: string; };
   "session.rename": { params: SessionRenameParams; result: null; };
   "fs.list": { params: FsListParams; result: FsEntry[]; };
   "fs.read": { params: FsReadParams; result: FsReadResult; };
+  "session.list": { params: SessionListParams; result: SessionListEntry[]; };
+  "session.meta": { params: SessionMetaParams; result: SessionListEntry | null; };
   "siwc.status": { params: AccountsEmptyParams; result: SiwcStatusResult; };
   "siwc.profiles": { params: AccountsEmptyParams; result: SiwcProfilesResult; };
   "siwc.models": { params: SiwcProfileParams; result: SiwcModel[]; };
@@ -30,6 +32,8 @@ export const serviceMetadata = {
   "session.rename": { kind: "write", requires_session: true, admin_only: false },
   "fs.list": { kind: "read", requires_session: false, admin_only: false },
   "fs.read": { kind: "read", requires_session: false, admin_only: false },
+  "session.list": { kind: "read", requires_session: false, admin_only: false },
+  "session.meta": { kind: "read", requires_session: true, admin_only: false },
   "siwc.status": { kind: "read", requires_session: false, admin_only: true },
   "siwc.profiles": { kind: "read", requires_session: false, admin_only: true },
   "siwc.models": { kind: "read", requires_session: false, admin_only: true },

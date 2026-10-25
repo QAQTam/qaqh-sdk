@@ -5,7 +5,7 @@
   "source_revision": "development",
   "source_dirty": true,
   "generator_version": "qaqh-contract-export/0.1.0",
-  "contract_hash": "12f8467cfd814a446988f39f081ca71301ae6236e769d86430c1b2f91e0055f4",
+  "contract_hash": "a1ad2487f658d5d15b1e55ed4e12792da7f865f492cf46f6c44b7399c6590cb3",
   "files": [
     {
       "path": "constants.ts",
@@ -13,11 +13,15 @@
     },
     {
       "path": "coverage.json",
-      "sha256": "2f0aa286839ee3d3a675f4e82ae3f57e1aaf40da2db46c76fdeaa7206254b726"
+      "sha256": "0c62e96b6ff0a36c6928a04fd60c735fca85a46f5be5f72d29312abbc7838933"
     },
     {
       "path": "fixtures/README.md",
       "sha256": "ccf998d52354903c5bb1b750f7cc8be87caf7876ac3e9ac02032734a73e5e366"
+    },
+    {
+      "path": "fixtures/approval-respond-request.json",
+      "sha256": "fc7dc370cfdf3ee3bdba0ad7b6f67c5a20262f5948821296e8ab3d7535fa1dc5"
     },
     {
       "path": "fixtures/approvals-empty.json",
@@ -70,6 +74,10 @@
     {
       "path": "fixtures/content-upload-response.json",
       "sha256": "9af78c70cebf7a2a1eb1c507a56bdbc52278b11fb278702e397bdc75f016c107"
+    },
+    {
+      "path": "fixtures/device-challenges.json",
+      "sha256": "f5a1e09874a2e326bc85fbf64f01f984f4c26ba61fe2bc139dd5e2dcf4aa3827"
     },
     {
       "path": "fixtures/devices.json",
@@ -228,6 +236,22 @@
       "sha256": "f2656b94f205e159a3e38f8bdc822df05e04799596f7025727b19455375bb6fa"
     },
     {
+      "path": "fixtures/service-session-list-params.json",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+    },
+    {
+      "path": "fixtures/service-session-list-result.json",
+      "sha256": "d22e48f1cdf6c30a2c0b8ef34e94173ab6a910289bdafc42237cc222dc2299f7"
+    },
+    {
+      "path": "fixtures/service-session-meta-params.json",
+      "sha256": "03b60a583c7d9f9698432f7a92adce19d856f31575433286bba4b105bdd5ff4f"
+    },
+    {
+      "path": "fixtures/service-session-meta-result.json",
+      "sha256": "55dacc1aa7fd0ee6830dfbda5fa486f2460adb969647b3b7abfd0a1ef94e45c2"
+    },
+    {
       "path": "fixtures/service-session-rename-params.json",
       "sha256": "09b9e463e30acdb34d3f69341c631d96f42aedf5060d5dc688b77686c7a70f48"
     },
@@ -304,8 +328,16 @@
       "sha256": "cb3403dc3378780add174dcb475150b4ea7dacec45889c5a6632f326b32e1cb9"
     },
     {
+      "path": "fixtures/timeline-entry-event.json",
+      "sha256": "7be9917fc15cb89239af734af277dc46e9f0c447686f20fec779c82912e1b5d3"
+    },
+    {
+      "path": "fixtures/timeline-page.json",
+      "sha256": "e2be78f35c0db4dba9370dbd347fafc4924d88ad4aa75836d6c2cd5ee93357bc"
+    },
+    {
       "path": "index.ts",
-      "sha256": "4a788b1c3496e5a191020dba6d931c1a9d48ea2360c5c6d0bc5b7e5d6e0ec199"
+      "sha256": "57cee911ea15b849882b4f7f2844223020464c83e98a70ff5de9e5a1393c5aaa"
     },
     {
       "path": "node.ts",
@@ -313,7 +345,7 @@
     },
     {
       "path": "service-map.ts",
-      "sha256": "1200830dfe5dc4f8284e8ccff9093464cb481f9d5c1b3810a936fe2d1b136832"
+      "sha256": "76a4e0fb97eac6973775d6b0dd51c0356ed3a6739127453a87df87c1904f180d"
     },
     {
       "path": "types/ReceiptIdScope.ts",
@@ -676,6 +708,10 @@
       "sha256": "e714c1812c8d946eebfda0e57f17571f85be296e4fbb3c326a7a2a6ec968fa5f"
     },
     {
+      "path": "types/qaqh/ReasoningKind.ts",
+      "sha256": "8a416a5a1a298975d96742c2bd88ac38aead52f0e078a5fb4625b567783ddc70"
+    },
+    {
       "path": "types/qaqh/RecoveryAction.ts",
       "sha256": "5414fff0993379c5a3b6f874e143ca16b5a357b7b17dfb433b22a1f06c9bb467"
     },
@@ -732,6 +768,10 @@
       "sha256": "f17a55e851d9a69d19071ec7b18f27692131ddcbd08744d963d071f4b91e444c"
     },
     {
+      "path": "types/qaqh/RingingV2ApprovalRespondRequest.ts",
+      "sha256": "6e289d8a49b415bda82bc6d82f142a27f1a12b34db8d876e1728fece28ce1b3b"
+    },
+    {
       "path": "types/qaqh/RingingV2AskOutcome.ts",
       "sha256": "b58ab267d5802b97149ec2d8a3e53aaa7745d1bda6e1226e4f1a16ab78c30d3f"
     },
@@ -774,6 +814,18 @@
     {
       "path": "types/qaqh/RingingV2Delivery.ts",
       "sha256": "5420a4ca849d076235b5531bf62b68ef0fa6a029a47ffe66d4863fd29b7cac7a"
+    },
+    {
+      "path": "types/qaqh/RingingV2DeviceApprovalKind.ts",
+      "sha256": "4872a388ff4fae90ef5a800595f653b68f0447b72ac8ce64907a5aa49677753a"
+    },
+    {
+      "path": "types/qaqh/RingingV2DeviceChallenge.ts",
+      "sha256": "6a260c28578158af6d5beae85ca38df9c18d86353ad0065d2fa4862796c81768"
+    },
+    {
+      "path": "types/qaqh/RingingV2DeviceChallenges.ts",
+      "sha256": "e092599478c66f62a08ef53ca2ea6dd2078f991b3d2c46203f4383b41e6b55b6"
     },
     {
       "path": "types/qaqh/RingingV2DeviceWire.ts",
@@ -888,12 +940,32 @@
       "sha256": "2362692d69ccee961c52a9a5b4029d0d7ced2b38251183215ec046bc7edc2303"
     },
     {
+      "path": "types/qaqh/SessionListEntry.ts",
+      "sha256": "2dbe8f4c684492f1ddf3e5bda39e949b1e195b623cc8b5cfab0f739ccf6f0c09"
+    },
+    {
+      "path": "types/qaqh/SessionListParams.ts",
+      "sha256": "09eaf9c5552b6fc474c7da48b3d36d44baf37e5af3cbeeda184c0c0b1e43d12f"
+    },
+    {
+      "path": "types/qaqh/SessionMeta.ts",
+      "sha256": "9a4eaa434b5f56fe78b5f83d15520d3fa8c4d6c6a4844c262e140139287419d3"
+    },
+    {
+      "path": "types/qaqh/SessionMetaParams.ts",
+      "sha256": "fb8351b83fe217f95c83333c1e9b17b78953fa93d7d94a825b8f5ef279365c81"
+    },
+    {
       "path": "types/qaqh/SessionMetadataPatch.ts",
       "sha256": "19c7cf339817079cbee07276f708ce5361ad1fee31b2c6706b0ad857781f455e"
     },
     {
       "path": "types/qaqh/SessionRenameParams.ts",
       "sha256": "ae71a1f9677abd5750143a56cd1550af1a5f6d5a3bbadb2589f3bc07061b83e3"
+    },
+    {
+      "path": "types/qaqh/SessionRunStatus.ts",
+      "sha256": "4a8f65536a36d13cd050f8e154da698cd1498caf70c6f1479cf54cd05df65ba6"
     },
     {
       "path": "types/qaqh/SessionToolError.ts",
@@ -962,6 +1034,18 @@
     {
       "path": "types/qaqh/SiwcStatusResult.ts",
       "sha256": "aa2d1bc5539d413c31ce0c3490cf2a486e84fa42950e759cfefc49b77fe17681"
+    },
+    {
+      "path": "types/qaqh/SkillSessionEntry.ts",
+      "sha256": "f192846517d984e3580e80dc2ee9f646741b22a8bbb4180a7ea5b0034a8bc860"
+    },
+    {
+      "path": "types/qaqh/SkillSessionEntryState.ts",
+      "sha256": "490d641b5757c3effa57cee0ce4a827cb8c448f127bf9abc8876d32c68501991"
+    },
+    {
+      "path": "types/qaqh/SkillSessionStateV2.ts",
+      "sha256": "b8d93c3d1e67ddab25e8f067cf780bb487baabc669982795e477ef9a7092a57d"
     },
     {
       "path": "types/qaqh/SubagentTerminalKind.ts",
@@ -1060,8 +1144,88 @@
       "sha256": "6e34cc197648c4e8cb825b7b9737c7096a2156e262731a580bef070b6b3127b5"
     },
     {
+      "path": "types/qaqh/TimelineBlock.ts",
+      "sha256": "e7bc1a0093a65aa89c70767cde1c74b281e2c7fe0d8846d6aa360f7f7bee1612"
+    },
+    {
+      "path": "types/qaqh/TimelineBlockKind.ts",
+      "sha256": "17ce2c3d61674e6b22bc190ed8e602bc807496dc6d6ab2972397223ed49ed3ed"
+    },
+    {
+      "path": "types/qaqh/TimelineBlockState.ts",
+      "sha256": "42c9be24d7a6167a1825c44e93dc8caca3e5c6dab690ea88631476ed75a06e41"
+    },
+    {
       "path": "types/qaqh/TimelineDelta.ts",
       "sha256": "3ae025a8710828ff40ee59c02069a6f3eac046eef11114af865a03b1d0e74396"
+    },
+    {
+      "path": "types/qaqh/TimelineEntry.ts",
+      "sha256": "2a762d69ce2ef9f210fa8c5865b6128bd45067b468755ff19dcfdecdf73ef86e"
+    },
+    {
+      "path": "types/qaqh/TimelineEvent.ts",
+      "sha256": "9d62d24d9b949e157ff2b55f6631b78b92e66bdcac6f771abea630857320449f"
+    },
+    {
+      "path": "types/qaqh/TimelineFailure.ts",
+      "sha256": "4f42d4911ef959ee119c01ac8b2fed070b8a0292f585bc9f809d34263d277893"
+    },
+    {
+      "path": "types/qaqh/TimelinePage.ts",
+      "sha256": "59089cd342847072b833ef1e377eab73701a586ee20aea7d055bbc4df530f9a7"
+    },
+    {
+      "path": "types/qaqh/TimelinePathOp.ts",
+      "sha256": "061bdfceb5b4779870c0dca1b713d69caf1d04f8b5ed22e4df5f12a1094750ce"
+    },
+    {
+      "path": "types/qaqh/TimelineRound.ts",
+      "sha256": "7734e0c1bd115bcdedb136ebff4976a8efbe3fcc9cdc330402185ca114a24994"
+    },
+    {
+      "path": "types/qaqh/TimelineSnapshot.ts",
+      "sha256": "f22ad5de0cc60b9c9e33383ac4e6a339b4b0eac6e33c30242d0c1843d9edb7d9"
+    },
+    {
+      "path": "types/qaqh/TimelineSseFrame.ts",
+      "sha256": "f99c92473dac346e7bf1ac7e702d29050058554dfe1a03ae8d96b4f9cd583bb3"
+    },
+    {
+      "path": "types/qaqh/TimelineTool.ts",
+      "sha256": "d713e9da54f298a38107f012d6c6e6412046a390c592928ae299064125f9c21b"
+    },
+    {
+      "path": "types/qaqh/TimelineToolBody.ts",
+      "sha256": "3a0ca729b47d1e956ad59f823fb96d2d01656e8471470a32bdc37932d529a82d"
+    },
+    {
+      "path": "types/qaqh/TimelineToolDisplay.ts",
+      "sha256": "fee86ea7992cfcfcfd454a7e79f886d96fbfbec1861913c11be89273d62d3b08"
+    },
+    {
+      "path": "types/qaqh/TimelineToolHeader.ts",
+      "sha256": "535374324b55a4d7b2efccdb1c8008c7dcbc8e48d74860ed055eae0546dd18d8"
+    },
+    {
+      "path": "types/qaqh/TimelineToolMetrics.ts",
+      "sha256": "91b2473049b440a77aef3b84e902126132f7a6a3b208a7bd1363dc9f0d03c957"
+    },
+    {
+      "path": "types/qaqh/TimelineToolPermission.ts",
+      "sha256": "95bbc8759c3ac0656a4a5360c60fa74c6cc232b72599f9dcda86599315b73460"
+    },
+    {
+      "path": "types/qaqh/TimelineToolState.ts",
+      "sha256": "3a0d7ce2691e0af38d5cc6434fa96cd537b8bdfcacd9622a24730635b44aa76a"
+    },
+    {
+      "path": "types/qaqh/TimelineTurn.ts",
+      "sha256": "b2e71848198079fd41d6cacf43bcfc18b549d61fe49ca0818e59c66f22d6f0c1"
+    },
+    {
+      "path": "types/qaqh/TimelineTurnState.ts",
+      "sha256": "66fe00afd44b9ef4552d049e51da33679b6592b2cb6b825fa11406204d41b63b"
     },
     {
       "path": "types/qaqh/TitleSource.ts",
@@ -1086,6 +1250,14 @@
     {
       "path": "types/qaqh/ToolReplayCapability.ts",
       "sha256": "436e6765cdb341727ca72b6861cffb9a71171b8bd22d437312f506ea62a4a533"
+    },
+    {
+      "path": "types/qaqh/ToolResultDisplayOutcome.ts",
+      "sha256": "615db1be645ad649c9c10f9c9c2c0889bb9934c67e903b2cf7344b43fa229361"
+    },
+    {
+      "path": "types/qaqh/ToolResultDisplayOutcomeState.ts",
+      "sha256": "a15e98f61960e0a9220399e54321e2bc0713fa62a4dc52b617fdc9790a1a1a82"
     },
     {
       "path": "types/qaqh/ToolTerminalStatus.ts",

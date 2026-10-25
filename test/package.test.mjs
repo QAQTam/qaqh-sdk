@@ -20,12 +20,13 @@ test("generated contract manifest hashes each imported artifact", async () => {
 
 test("partial backend contract coverage stays explicit", async () => {
   const coverage = JSON.parse(await readFile(new URL("coverage.json", contractRoot), "utf8"));
-  // 2026-10-24 B02 轮次起 bootstrap/watch/team/approvals.admin/content.upload
-  // 已由后端 DTO 收口；仍未交付的能力必须保持显式 pending，禁止静默消失。
-  for (const delivered of ["session.bootstrap-watch", "session.team", "approvals.admin", "content.upload"]) {
+  // 2026-10-25 契约重生成：timeline/approvals.device/content.download/session.list
+  // /session.meta 已由后端 DTO 收口；仍未交付的能力必须保持显式 pending，
+  // 禁止静默消失。
+  for (const delivered of ["session.bootstrap-watch", "session.team", "approvals.admin", "approvals.device", "content.upload", "content.download", "timeline.snapshot-watch", "service.session.list", "service.session.meta"]) {
     assert.ok(coverage.capabilities.some((capability) => capability.id === delivered && capability.status === "implemented"), delivered);
   }
-  for (const pending of ["timeline.snapshot-watch", "approvals.device", "content.download"]) {
+  for (const pending of ["daemon.control", "service.git.diff", "service.workspace.list"]) {
     assert.ok(coverage.capabilities.some((capability) => capability.id === pending && capability.status === "pending"), pending);
   }
 });

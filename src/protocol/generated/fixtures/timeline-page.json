@@ -1,0 +1,23 @@
+{
+  "schema": "qaqh.Ringing",
+  "version": 2,
+  "server_epoch": "fixture-epoch",
+  "session_id": "0199a0f0-0000-7000-8000-000000000001",
+  "snapshot": {
+    "watermark": 1,
+    "turns": [
+      {
+        "turn_id": "t1",
+        "turn_index": 0,
+        "created_seq": 1,
+        "user_text": "synthetic user turn",
+        "sealed": true,
+        "state": "completed",
+        "rounds": []
+      }
+    ]
+  },
+  "has_more": false,
+  "total_turns": 1,
+  "truncated_before": false
+}
