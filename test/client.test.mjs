@@ -5,7 +5,7 @@ import { mkdtemp, writeFile, rm, utimes } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createClient, SdkError } from "../dist/core/index.js";
-import { resolveCredentials, DiscoveryError } from "../dist/node/index.js";
+import { resolveCredentials, DiscoveryError, isAlive } from "../dist/node/index.js";
 
 const fixtures = new URL("../src/protocol/generated/fixtures/", import.meta.url);
 const fixture = async (name) => JSON.parse(await readFile(new URL(name, fixtures), "utf8"));
@@ -78,6 +78,21 @@ test("service calls carry bearer + client session headers and return typed resul
   assert.equal(call.init.headers.get("Authorization"), "Bearer fixture-token");
   assert.equal(call.init.headers.get("X-QAQH-Client-Session-Id"), "client-session-fixture");
   client.disconnect();
+});
+
+test("submit stamps the channel tag into the command payload", async () => {
+  const mock = mockBackend();
+  const { client } = await connectedClient(mock);
+  let captured = null;
+  mock.add("POST", /\/commands\/control$/, async (url, init) => {
+    captured = JSON.parse(String(init.body));
+    return jsonResponse({ command_id: captured.command_id, status: "accepted" });
+  });
+  await client.submit("control", { type: "session_create", cwd: "/tmp" });
+  // RingingCommand is internally tagged by `channel` on the daemon wire.
+  assert.equal(captured.command.channel, "control");
+  assert.equal(captured.command.type, "session_create");
+  assert.equal(captured.channel, "control");
 });
 
 test("submit rejects mismatched ack ids and surfaces daemon rejections", async () => {
@@ -325,6 +340,21 @@ test("watchTimeline replays via Last-Event-ID after a drop", async () => {
   watch.close(); client.disconnect();
 });
 
+test("timeline watch holds an SSE stream open instead of aborting it", async () => {
+  const mock = mockBackend();
+  const { client } = await connectedClient(mock);
+  // A infinite-timeout stream must not hit the timeout timer: setTimeout(_, Infinity)
+  // clamps to 1ms on Node/browsers, which used to abort every live stream.
+  mock.add("GET", /\/timeline\/events$/, () => sseResponse(frame("timeline.entry", { schema: "qaqh.Ringing", version: 2, session_id: SEED, entry: { round_index: 0 } }), { holdOpen: true }));
+  const statuses = [];
+  const watch = client.watchTimeline(SEED, { onStatus: (status) => statuses.push(status) });
+  await waitUntil(() => watch.status === "live");
+  await new Promise(resolve => setTimeout(resolve, 200));
+  assert.equal(watch.status, "live", `stream dropped back to ${watch.status}; statuses=${statuses.join(",")}`);
+  watch.close();
+  assert.equal(watch.status, "closed");
+});
+
 test("pair consumes a one-time token without bearer credentials", async () => {
   const mock = mockBackend();
   mock.add("POST", /\/pair$/, () => jsonResponse({ device_id: "dev-1", token: "paired-token", protocol_version: 2 }));
@@ -346,7 +376,12 @@ test("resolveCredentials validates pid liveness, protocol version, and freshness
     await writeFile(path, JSON.stringify({ ...doc, pid: 99999999 }));
     await assert.rejects(() => resolveCredentials({ kind: "local-discovery", path }), (error) => error instanceof DiscoveryError && error.code === "dead_pid");
     await writeFile(path, JSON.stringify({ ...doc, protocol_version: 3 }));
-    await assert.rejects(() => resolveCredentials({ kind: "local-discovery", path }), (error) => error instanceof DiscoveryError && error.code === "wrong_protocol");
+    // discovery protocol_version is the control-plane version, not the Ringing
+    // v2 wire version — any positive number is accepted, wire compatibility is
+    // enforced by the open handshake in connect().
+    assert.equal((await resolveCredentials({ kind: "local-discovery", path })).protocol_version, 3);
+    await writeFile(path, JSON.stringify({ ...doc, protocol_version: "2" }));
+    await assert.rejects(() => resolveCredentials({ kind: "local-discovery", path }), (error) => error instanceof DiscoveryError && error.code === "invalid_shape");
     await writeFile(path, "{ not json");
     await assert.rejects(() => resolveCredentials({ kind: "local-discovery", path }), (error) => error instanceof DiscoveryError && error.code === "invalid_json");
     const old = join(dir, "stale.json");
@@ -378,3 +413,68 @@ async function waitUntil(predicate, timeoutMs = 2000) {
   while (!predicate() && Date.now() < deadline) await new Promise(resolve => setTimeout(resolve, 10));
   assert.ok(predicate(), "condition not reached within timeout");
 }
+
+test("resolveOutcome polls commandStatus until a terminal state", async () => {
+  const mock = mockBackend();
+  const { client } = await connectedClient(mock);
+  let polls = 0;
+  mock.add("GET", /\/commands\/cmd-42$/, () => {
+    polls += 1;
+    return jsonResponse({ command_id: "cmd-42", state: polls === 1 ? "queued" : "succeeded", payload_fingerprint: "fp" });
+  });
+  const error = new SdkError("outcome_unknown", "submit timed out", undefined, undefined, "cmd-42");
+  const status = await client.resolveOutcome(error);
+  assert.equal(status.state, "succeeded");
+  assert.equal(polls, 2);
+});
+
+test("resolveOutcome passes unrelated errors through untouched", async () => {
+  const mock = mockBackend();
+  const { client } = await connectedClient(mock);
+  const rejected = new SdkError("command_rejected", "nope");
+  await assert.rejects(() => client.resolveOutcome(rejected), (error) => error === rejected);
+  const untagged = new SdkError("outcome_unknown", "no command id attached");
+  await assert.rejects(() => client.resolveOutcome(untagged), (error) => error === untagged);
+});
+
+test("resolveOutcome rethrows the original error when the status poll times out", async () => {
+  const mock = mockBackend();
+  const { client } = await connectedClient(mock);
+  mock.add("GET", /\/commands\/cmd-7$/, () => jsonResponse({ command_id: "cmd-7", state: "running", payload_fingerprint: "fp" }));
+  const error = new SdkError("outcome_unknown", "submit timed out", undefined, undefined, "cmd-7");
+  await assert.rejects(() => client.resolveOutcome(error, { timeoutMs: 100, pollMs: 20 }), (resolution) => resolution === error);
+});
+
+test("isAlive is exported from the node entry", () => {
+  assert.equal(typeof isAlive, "function");
+  assert.equal(isAlive(process.pid), true);
+  assert.equal(isAlive(999999999), false);
+});
+
+test("resolveCredentials walks multiple candidate paths and prefers the first valid one", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "qaqh-sdk-"));
+  try {
+    const missing = join(dir, "missing.json");
+    const valid = join(dir, "valid.json");
+    await writeFile(valid, JSON.stringify({ ...credentials, endpoint: "http://127.0.0.1:9001" }));
+    assert.equal((await resolveCredentials({ kind: "local-discovery", paths: [missing, valid] })).endpoint, "http://127.0.0.1:9001");
+
+    // A rejected-but-existing document at a higher-priority path must not mask a valid one.
+    const broken = join(dir, "broken.json");
+    await writeFile(broken, JSON.stringify({ endpoint: "http://127.0.0.1:9002" }));
+    assert.equal((await resolveCredentials({ kind: "local-discovery", paths: [broken, valid] })).endpoint, "http://127.0.0.1:9001");
+
+    await assert.rejects(
+      () => resolveCredentials({ kind: "local-discovery", paths: [missing, join(dir, "also-missing.json")] }),
+      (error) => error instanceof DiscoveryError && error.code === "not_found" && /also-missing\.json/.test(error.message),
+    );
+
+    // The most specific failure wins when every candidate exists but is rejected.
+    const brokenShape = join(dir, "broken-shape.json");
+    await writeFile(brokenShape, JSON.stringify({ ...credentials, protocol_version: "1" }));
+    await assert.rejects(
+      () => resolveCredentials({ kind: "local-discovery", paths: [brokenShape, missing] }),
+      (error) => error instanceof DiscoveryError && error.code === "invalid_shape",
+    );
+  } finally { await rm(dir, { recursive: true, force: true }); }
+});

@@ -13,7 +13,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json && node scripts/fix-dist.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && node --test test/*.test.mjs",
+    "test": "npm run build && node --test --test-force-exit test/*.test.mjs",
     "pack": "npm pack --ignore-scripts"
   },
   "devDependencies": { "typescript": "^7.0.2", "@types/node": "^22.13.0" }

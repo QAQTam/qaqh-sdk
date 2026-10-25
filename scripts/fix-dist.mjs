@@ -1,5 +1,8 @@
 // Post-build fixups so dist actually runs under Node ESM:
-// 1. ts-rs emits extensionless relative imports; append ".js".
+// 1. ts-rs emits extensionless relative imports; append ".js" — in both .js
+//    (runtime) and .d.ts (types: "./x.js" resolves to the sibling x.d.ts).
+//    Without the .d.ts pass, every star re-export through the generated
+//    protocol index silently vanishes for consumers under NodeNext.
 // 2. `manifest.ts` imports generated/manifest.json via resolveJsonModule; copy it next to the compiled output.
 import { readdir, readFile, writeFile, mkdir, cp } from "node:fs/promises";
 import { join } from "node:path";
@@ -10,7 +13,7 @@ const files = [];
 async function walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const path = join(dir, entry.name);
-    if (entry.isDirectory()) await walk(path); else if (path.endsWith(".js")) files.push(path);
+    if (entry.isDirectory()) await walk(path); else if (path.endsWith(".js") || path.endsWith(".d.ts")) files.push(path);
   }
 }
 await walk(dist);

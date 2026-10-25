@@ -12,6 +12,7 @@ import { SseDecoder } from "./sse.js";
 
 export { SseDecoder } from "./sse.js";
 export type { SseFrame } from "./sse.js";
+export type { ClientV2Bootstrap } from "../protocol/index.js";
 
 function createId(): string { return globalThis.crypto.randomUUID(); }
 function backoff(attempt: number, initialMs: number, maxMs: number): number { return Math.min(maxMs, initialMs * 2 ** Math.min(attempt, 10)) + Math.floor(Math.random() * 250); }
@@ -108,7 +109,11 @@ export class RingingClient {
 
   async submit(channel: RingingV2CommandEnvelope["channel"], command: RingingV2CommandEnvelope["command"], sessionId: string | null = null, commandId = createId()): Promise<CommandSubmission> {
     await this.ensureReady();
-    const envelope: RingingV2CommandEnvelope = { schema: RINGING_SCHEMA, version: RINGING_V2_VERSION, channel, command_id: commandId, client_instance_id: this.clientInstanceId, client_session_id: this.clientSessionId!, session_id: sessionId, command };
+    // RingingCommand is internally tagged by `channel` on the wire
+    // (`{ channel, type, ... }`): stamp the tag from the envelope channel so
+    // callers can pass the bare command. Stamping last makes a caller-supplied
+    // tag unable to disagree with the envelope.
+    const envelope: RingingV2CommandEnvelope = { schema: RINGING_SCHEMA, version: RINGING_V2_VERSION, channel, command_id: commandId, client_instance_id: this.clientInstanceId, client_session_id: this.clientSessionId!, session_id: sessionId, command: { ...command, channel } as RingingV2CommandEnvelope["command"] };
     try {
       const ack = await this.request<RingingV2CommandAck>(`${RINGING_V2_BASE_PATH}/commands/${channel}`, { method: "POST", body: JSON.stringify(envelope) });
       if (ack.command_id !== commandId) throw new SdkError("protocol", "Command acknowledgement ID mismatch", undefined, undefined, commandId);
@@ -134,6 +139,23 @@ export class RingingClient {
       if (TERMINAL_COMMAND_STATES.has(status.state)) return status;
       if (Date.now() + pollMs > deadline) throw new SdkError("timeout", `Command ${commandId} did not reach a terminal state within ${options.timeoutMs ?? 30000}ms`, undefined, undefined, commandId);
       await new Promise<void>(resolve => setTimeout(resolve, pollMs));
+    }
+  }
+
+  /**
+   * Close the loop on an `outcome_unknown` error from `submit`: poll
+   * commandStatus for the attached command id until a terminal state. Errors
+   * other than `outcome_unknown` (and ids missing from it) pass through
+   * untouched; if the poll itself times out the original error is rethrown —
+   * the outcome is exactly as unknown as before.
+   */
+  async resolveOutcome(error: unknown, options: { timeoutMs?: number; pollMs?: number } = {}): Promise<RingingV2CommandStatus> {
+    if (!(error instanceof SdkError) || error.kind !== "outcome_unknown" || !error.commandId) throw error;
+    try {
+      return await this.waitForCommand(error.commandId, options);
+    } catch (resolution) {
+      if (resolution instanceof SdkError && resolution.kind === "timeout" && resolution.commandId === error.commandId) throw error;
+      throw resolution;
     }
   }
 
@@ -387,8 +409,11 @@ export class RingingClient {
   /** Fetch with auth headers, per-call timeout, and controller bookkeeping; returns the raw Response. */
   private async raw(path: string, init: { method: string; body?: BodyInit; headers?: HeadersInit; contentType?: string | false; authenticated?: boolean; bearer?: boolean; timeoutMs?: number; signal?: AbortSignal }): Promise<Response> {
     const controller = new AbortController(); this.controllers.add(controller);
-    const timeout = init.timeoutMs ?? this.timeoutMs; const timer = setTimeout(() => controller.abort(), timeout);
-    const done = () => { clearTimeout(timer); this.controllers.delete(controller); };
+    const timeout = init.timeoutMs ?? this.timeoutMs;
+    // Only arm a timer for finite timeouts: setTimeout(_, Infinity) clamps to
+    // 1ms on Node and browsers, aborting long-lived SSE streams immediately.
+    const timer = Number.isFinite(timeout) ? setTimeout(() => controller.abort(), timeout) : null;
+    const done = () => { if (timer) clearTimeout(timer); this.controllers.delete(controller); };
     try {
       const headers = new Headers(init.headers);
       if (init.contentType !== false) headers.set("Content-Type", init.contentType ?? "application/json");
