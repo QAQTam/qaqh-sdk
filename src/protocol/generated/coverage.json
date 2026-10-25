@@ -565,10 +565,19 @@
       "types": []
     },
     {
-      "fixtures": [],
+      "admin_only": false,
+      "fixtures": [
+        "service-session-activity-params.json",
+        "service-session-activity-result.json"
+      ],
       "id": "service.session.activity",
-      "status": "pending",
-      "types": []
+      "kind": "read",
+      "method": "POST",
+      "params_type": "SessionActivityParams",
+      "path": "/ringing/v2/service/session.activity",
+      "requires_session": false,
+      "result_type": "SessionActivity[]",
+      "status": "implemented"
     },
     {
       "fixtures": [],
@@ -577,10 +586,19 @@
       "types": []
     },
     {
-      "fixtures": [],
+      "admin_only": false,
+      "fixtures": [
+        "service-session-get_activity-params.json",
+        "service-session-get_activity-result.json"
+      ],
       "id": "service.session.get_activity",
-      "status": "pending",
-      "types": []
+      "kind": "read",
+      "method": "POST",
+      "params_type": "SessionGetActivityParams",
+      "path": "/ringing/v2/service/session.get_activity",
+      "requires_session": true,
+      "result_type": "SessionToolActivity[]",
+      "status": "implemented"
     },
     {
       "admin_only": false,
@@ -628,16 +646,34 @@
       "status": "implemented"
     },
     {
-      "fixtures": [],
+      "admin_only": false,
+      "fixtures": [
+        "service-session-set_profile-params.json",
+        "service-session-set_profile-result.json"
+      ],
       "id": "service.session.set_profile",
-      "status": "pending",
-      "types": []
+      "kind": "write",
+      "method": "POST",
+      "params_type": "SessionSetProfileParams",
+      "path": "/ringing/v2/service/session.set_profile",
+      "requires_session": true,
+      "result_type": "null",
+      "status": "implemented"
     },
     {
-      "fixtures": [],
+      "admin_only": false,
+      "fixtures": [
+        "service-session-set_tool_mode-params.json",
+        "service-session-set_tool_mode-result.json"
+      ],
       "id": "service.session.set_tool_mode",
-      "status": "pending",
-      "types": []
+      "kind": "write",
+      "method": "POST",
+      "params_type": "SessionSetToolModeParams",
+      "path": "/ringing/v2/service/session.set_tool_mode",
+      "requires_session": true,
+      "result_type": "null",
+      "status": "implemented"
     },
     {
       "admin_only": true,

@@ -1,4 +1,4 @@
-import type { AccountsEmptyParams, DaemonVersionParams, DsAccountAttemptParams, DsAccountBalanceResult, DsAccountBonus, DsAccountBonusAckParams, DsAccountModel, DsAccountSignInStartParams, DsAccountSignInStartResult, DsAccountSignInStatusResult, DsAccountStatusResult, DsAccountVerifyResult, FsEntry, FsListParams, FsReadParams, FsReadResult, SessionListEntry, SessionListParams, SessionMetaParams, SessionRenameParams, SiwcFlowParams, SiwcModel, SiwcProfileParams, SiwcProfileSelectParams, SiwcProfilesResult, SiwcSignInStartParams, SiwcSignInStartResult, SiwcSignInStatusResult, SiwcSignOutResult, SiwcStatusResult } from "./index";
+import type { AccountsEmptyParams, DaemonVersionParams, DsAccountAttemptParams, DsAccountBalanceResult, DsAccountBonus, DsAccountBonusAckParams, DsAccountModel, DsAccountSignInStartParams, DsAccountSignInStartResult, DsAccountSignInStatusResult, DsAccountStatusResult, DsAccountVerifyResult, FsEntry, FsListParams, FsReadParams, FsReadResult, SessionActivity, SessionActivityParams, SessionGetActivityParams, SessionListEntry, SessionListParams, SessionMetaParams, SessionRenameParams, SessionSetProfileParams, SessionSetToolModeParams, SessionToolActivity, SiwcFlowParams, SiwcModel, SiwcProfileParams, SiwcProfileSelectParams, SiwcProfilesResult, SiwcSignInStartParams, SiwcSignInStartResult, SiwcSignInStatusResult, SiwcSignOutResult, SiwcStatusResult } from "./index";
 
 export interface ServiceMap {
   "daemon.version": { params: DaemonVersionParams; result: string; };
@@ -7,6 +7,10 @@ export interface ServiceMap {
   "fs.read": { params: FsReadParams; result: FsReadResult; };
   "session.list": { params: SessionListParams; result: SessionListEntry[]; };
   "session.meta": { params: SessionMetaParams; result: SessionListEntry | null; };
+  "session.activity": { params: SessionActivityParams; result: SessionActivity[]; };
+  "session.get_activity": { params: SessionGetActivityParams; result: SessionToolActivity[]; };
+  "session.set_profile": { params: SessionSetProfileParams; result: null; };
+  "session.set_tool_mode": { params: SessionSetToolModeParams; result: null; };
   "siwc.status": { params: AccountsEmptyParams; result: SiwcStatusResult; };
   "siwc.profiles": { params: AccountsEmptyParams; result: SiwcProfilesResult; };
   "siwc.models": { params: SiwcProfileParams; result: SiwcModel[]; };
@@ -34,6 +38,10 @@ export const serviceMetadata = {
   "fs.read": { kind: "read", requires_session: false, admin_only: false },
   "session.list": { kind: "read", requires_session: false, admin_only: false },
   "session.meta": { kind: "read", requires_session: true, admin_only: false },
+  "session.activity": { kind: "read", requires_session: false, admin_only: false },
+  "session.get_activity": { kind: "read", requires_session: true, admin_only: false },
+  "session.set_profile": { kind: "write", requires_session: true, admin_only: false },
+  "session.set_tool_mode": { kind: "write", requires_session: true, admin_only: false },
   "siwc.status": { kind: "read", requires_session: false, admin_only: true },
   "siwc.profiles": { kind: "read", requires_session: false, admin_only: true },
   "siwc.models": { kind: "read", requires_session: false, admin_only: true },
